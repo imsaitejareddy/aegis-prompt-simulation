@@ -24,6 +24,18 @@ metrics, and reproduce the qualitative findings of the Aegis paper.
   per scenario), and generates two plots: a box plot of latencies and a
   bar chart of attack success rates.
 
+* `simulate_network_aegis.py` — A more detailed simulation of the Aegis
+  evaluation that constructs a random peer‑to‑peer network of agents (up to
+  1,000) and models their interactions under both the baseline and Aegis
+  protocols.  It simulates post‑quantum cryptographic primitives (ML‑KEM
+  and ML‑DSA) and zero‑knowledge proofs with realistic latency
+  distributions (median ≈2.8 s, p95 ≈4.1 s).  Two attack scenarios are
+  considered — agent spoofing and policy‑violation via malicious input —
+  and the script reports median/p95 latencies and attack success rates.
+  Running this script with the default parameters replicates the 20,000
+  interactions described in the paper’s evaluation.  Use the `--histogram`
+  option to generate a histogram of ZKP proof times.
+
 * `plots/` — When `analysis.py` is executed, this directory will contain
   the generated figures (`latency_boxplot.png` and
   `attack_success_rates.png`) as well as a `summary_statistics.csv` file.
