@@ -36,13 +36,27 @@ metrics, and reproduce the qualitative findings of the Aegis paper.
   interactions described in the paper’s evaluation.  Use the `--histogram`
   option to generate a histogram of ZKP proof times.
 
+* `simulate_network_aegis_v2.py` — An **enhanced** network simulation that
+  explicitly models the cryptographic workflow of the Aegis protocol.  In
+  addition to generating a random graph of agents, this script performs
+  mock key derivation, encryption and signature operations for each
+  message, and simulates zero‑knowledge proof generation and
+  verification using log‑normal and normal distributions, respectively.
+  Attack scenarios (spoofing and policy violation) are represented by
+  forged signatures or proofs; the baseline protocol omits PQC and ZKP
+  layers and thus exhibits lower latency but higher attack success rates.
+  The default configuration runs 10,000 interactions per protocol and
+  attack type (40,000 total).  Use the `--output` and `--histogram`
+  flags to control file names.
+
 * `plots/` — When `analysis.py` is executed, this directory will contain
   the generated figures (`latency_boxplot.png` and
   `attack_success_rates.png`) as well as a `summary_statistics.csv` file.
 
 ## Running the simulation
 
-1. **Generate synthetic results.** From the root of the repository, run:
+1. **Generate synthetic results (simplified simulation).** From the root
+   of the repository, run:
 
    ```bash
    python simulate_aegis.py --interactions 10000 --output results.csv
@@ -51,6 +65,20 @@ metrics, and reproduce the qualitative findings of the Aegis paper.
    Adjust the `--interactions` argument to change the number of
    interactions per scenario.  With 10,000 interactions per scenario, the
    script will produce 60,000 records across six scenarios.
+
+   Alternatively, to run the detailed network simulation with explicit
+   cryptographic mocks, invoke:
+
+   ```bash
+   python simulate_network_aegis_v2.py --agents 1000 --interactions 10000 --output detailed_results.csv --histogram detailed_hist.png
+   ```
+
+   This command simulates a network of 1,000 agents, performs 10,000
+   interactions per protocol/attack combination (a total of 40,000
+   interactions), writes results to `detailed_results.csv` and saves a
+   histogram of Aegis proof times to `detailed_hist.png`.  Expect the
+   median proof time to be around 2.8 seconds and the p95 around
+   4.1 seconds.
 
 2. **Analyse the results.** Then run:
 
